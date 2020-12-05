@@ -15,7 +15,11 @@ function Vue (options) {
   this._init(options)
 }
 
-/* 给Vue的prototype添加函数 */
+/**
+ * 每个Mixin都是往Vue.prototype上挂载方法，
+ * 这如果用ES6的class方式实现不利于代码拆分和模块化管理，
+ * 所以采用了ES5的方式实现Vue构造函数
+ * */
 initMixin(Vue)
 stateMixin(Vue)
 eventsMixin(Vue)

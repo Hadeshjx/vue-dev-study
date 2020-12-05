@@ -32,7 +32,7 @@ Vue.prototype.$mount = function (
     return this
   }
 
-  const options = this.$options
+  const options = this.$options /* 取出配置 */
   /* 若不存在render选项则将template/el的设置转换成render函数 */
   // resolve template/el and convert to render function
   if (!options.render) {

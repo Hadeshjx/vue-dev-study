@@ -13,6 +13,7 @@ import { extend, mergeOptions, formatComponentName } from '../util/index'
 let uid = 0
 
 export function initMixin (Vue: Class<Component>) {
+  /* 挂载_init方法 */
   Vue.prototype._init = function (options?: Object) {
     const vm: Component = this
     // a uid
@@ -35,6 +36,7 @@ export function initMixin (Vue: Class<Component>) {
       // internal component options needs special treatment.
       initInternalComponent(vm, options)
     } else {
+      /* 整合 用户的 options 和 默认的 options */
       vm.$options = mergeOptions(
         resolveConstructorOptions(vm.constructor),
         options || {},
@@ -53,9 +55,9 @@ export function initMixin (Vue: Class<Component>) {
     initEvents(vm)
     initRender(vm)
     callHook(vm, 'beforeCreate')
-    initInjections(vm) // resolve injections before data/props
+    initInjections(vm) // resolve injections before data/props 给组件注入数据
     initState(vm)
-    initProvide(vm) // resolve provide after data/props
+    initProvide(vm) // resolve provide after data/props 提供数据
     callHook(vm, 'created')
 
     /* istanbul ignore if */
@@ -71,6 +73,7 @@ export function initMixin (Vue: Class<Component>) {
   }
 }
 
+/* 初始化内部组件 */
 export function initInternalComponent (vm: Component, options: InternalComponentOptions) {
   const opts = vm.$options = Object.create(vm.constructor.options)
   // doing this because it's faster than dynamic enumeration.
@@ -90,6 +93,7 @@ export function initInternalComponent (vm: Component, options: InternalComponent
   }
 }
 
+/* 解析构造函数选项 */
 export function resolveConstructorOptions (Ctor: Class<Component>) {
   let options = Ctor.options
   if (Ctor.super) {
@@ -114,6 +118,7 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {
   return options
 }
 
+/* 解析修改选项 */
 function resolveModifiedOptions (Ctor: Class<Component>): ?Object {
   let modified
   const latest = Ctor.options
