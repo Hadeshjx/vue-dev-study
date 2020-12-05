@@ -4,10 +4,12 @@ const zlib = require('zlib')
 const rollup = require('rollup')
 const terser = require('terser')
 
+/* 判断是否存在dist目录，不存在就创建dist */
 if (!fs.existsSync('dist')) {
   fs.mkdirSync('dist')
 }
 
+/* 从配置文件读取配置，拿到所有构建的path */
 let builds = require('./config').getAllBuilds()
 
 // filter builds via command line arg
