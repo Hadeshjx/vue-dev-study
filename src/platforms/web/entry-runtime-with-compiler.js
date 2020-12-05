@@ -14,14 +14,17 @@ const idToTemplate = cached(id => {
   return el && el.innerHTML
 })
 
+/* 把原型中的$mount缓存下来 */
 const mount = Vue.prototype.$mount
+/* 浏览器web环境下，扩展默认$mount方法：能够编译template或el指定的模板 */
 Vue.prototype.$mount = function (
   el?: string | Element,
   hydrating?: boolean
 ): Component {
+  /* 根据选择器查询获取真实dom元素并赋值给el */
   el = el && query(el)
 
-  /* istanbul ignore if */
+  /* istanbul ignore if */ /* el不能是<body> 或者 <html>，因为el将来是被替换掉的 */
   if (el === document.body || el === document.documentElement) {
     process.env.NODE_ENV !== 'production' && warn(
       `Do not mount Vue to <html> or <body> - mount to normal elements instead.`
@@ -30,13 +33,14 @@ Vue.prototype.$mount = function (
   }
 
   const options = this.$options
+  /* 若不存在render选项则将template/el的设置转换成render函数 */
   // resolve template/el and convert to render function
   if (!options.render) {
     let template = options.template
-    if (template) {
+    if (template) {/* 配置里面有template选项 */
       if (typeof template === 'string') {
         if (template.charAt(0) === '#') {
-          template = idToTemplate(template)
+          template = idToTemplate(template) /* 如果template是通过id选择器指定的，则获取template内部的html */
           /* istanbul ignore if */
           if (process.env.NODE_ENV !== 'production' && !template) {
             warn(
@@ -53,8 +57,8 @@ Vue.prototype.$mount = function (
         }
         return this
       }
-    } else if (el) {
-      template = getOuterHTML(el)
+    } else if (el) { /* 没指定template但是指定了el */
+      template = getOuterHTML(el) /* 获取el那个真实dom作为template */
     }
     if (template) {
       /* istanbul ignore if */
@@ -62,6 +66,7 @@ Vue.prototype.$mount = function (
         mark('compile')
       }
 
+	  /* 把指定的template编译成rende函数*/
       const { render, staticRenderFns } = compileToFunctions(template, {
         outputSourceRange: process.env.NODE_ENV !== 'production',
         shouldDecodeNewlines,
@@ -79,7 +84,7 @@ Vue.prototype.$mount = function (
       }
     }
   }
-  return mount.call(this, el, hydrating)
+  return mount.call(this, el, hydrating) /* 执行默认$mount函数 */
 }
 
 /**

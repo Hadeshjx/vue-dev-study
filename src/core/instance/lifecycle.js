@@ -41,6 +41,7 @@ export function initLifecycle (vm: Component) {
     parent.$children.push(vm)
   }
 
+  /* 初始化一些实例属性 */
   vm.$parent = parent
   vm.$root = parent ? parent.$root : vm
 
@@ -55,6 +56,10 @@ export function initLifecycle (vm: Component) {
   vm._isBeingDestroyed = false
 }
 
+/**
+ * 实现组件生命周期相关的三个核心实例api _update是组件更新周期中的关键方法，
+ * 组件触发更新该函数就会调用，它执行 vnode 的 diff 和 patch 等操作
+ * */
 export function lifecycleMixin (Vue: Class<Component>) {
   Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
     const vm: Component = this

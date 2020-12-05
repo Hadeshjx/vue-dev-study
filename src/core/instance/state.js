@@ -48,15 +48,15 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 export function initState (vm: Component) {
   vm._watchers = []
   const opts = vm.$options
-  if (opts.props) initProps(vm, opts.props)
-  if (opts.methods) initMethods(vm, opts.methods)
-  if (opts.data) {
+  if (opts.props) initProps(vm, opts.props) /* 初始化所有属性 */
+  if (opts.methods) initMethods(vm, opts.methods) /* 初始化回调函数 */
+  if (opts.data) { /* 数据响应化 */
     initData(vm)
   } else {
     observe(vm._data = {}, true /* asRootData */)
   }
-  if (opts.computed) initComputed(vm, opts.computed)
-  if (opts.watch && opts.watch !== nativeWatch) {
+  if (opts.computed) initComputed(vm, opts.computed) /* 初始化计算属性 */
+  if (opts.watch && opts.watch !== nativeWatch) { /* watch 初始化 */
     initWatch(vm, opts.watch)
   }
 }
@@ -339,21 +339,23 @@ export function stateMixin (Vue: Class<Component>) {
   Object.defineProperty(Vue.prototype, '$data', dataDef)
   Object.defineProperty(Vue.prototype, '$props', propsDef)
 
-  Vue.prototype.$set = set
-  Vue.prototype.$delete = del
+  Vue.prototype.$set = set /* 定义$set */
+  Vue.prototype.$delete = del /* 定义$delete */
 
+  /* 定义$watch */
   Vue.prototype.$watch = function (
     expOrFn: string | Function,
     cb: any,
     options?: Object
   ): Function {
     const vm: Component = this
-    if (isPlainObject(cb)) {
+    if (isPlainObject(cb)) { /* 对象形式回调的解析 */
       return createWatcher(vm, expOrFn, cb, options)
     }
     options = options || {}
     options.user = true
-    const watcher = new Watcher(vm, expOrFn, cb, options)
+    const watcher = new Watcher(vm, expOrFn, cb, options) /* 创建watcher监视数值变化 */
+	/* 如有immediate选项，立即执行一次cb */
     if (options.immediate) {
       try {
         cb.call(vm, watcher.value)

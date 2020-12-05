@@ -17,6 +17,7 @@ export function initInjections (vm: Component) {
   const result = resolveInject(vm.$options.inject, vm)
   if (result) {
     toggleObserving(false)
+	/* 把result里的数据做响应化 */
     Object.keys(result).forEach(key => {
       /* istanbul ignore else */
       if (process.env.NODE_ENV !== 'production') {

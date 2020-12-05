@@ -9,6 +9,7 @@ import {
 } from '../util/index'
 import { updateListeners } from '../vdom/helpers/index'
 
+/* 父组件传递的 需要处理的事件，因为写代码的时候，自定义事件是在父组件定义的，而实际上是子组件进行派发和监听的 */
 export function initEvents (vm: Component) {
   vm._events = Object.create(null)
   vm._hasHookEvent = false
@@ -49,6 +50,7 @@ export function updateComponentListeners (
   target = undefined
 }
 
+/* 实现事件相关实例API */
 export function eventsMixin (Vue: Class<Component>) {
   const hookRE = /^hook:/
   Vue.prototype.$on = function (event: string | Array<string>, fn: Function): Component {
