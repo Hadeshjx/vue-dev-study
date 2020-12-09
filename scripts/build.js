@@ -49,7 +49,7 @@ function buildEntry (config) {
   return rollup.rollup(config)
     .then(bundle => bundle.generate(output))
     .then(({ output: [{ code }] }) => {
-      if (isProd) {
+      if (isProd) { /* 如果是 min.js 结尾的js就再进行一次压缩 */
         const minified = (banner ? banner + '\n' : '') + terser.minify(code, {
           toplevel: true,
           output: {
