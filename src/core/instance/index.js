@@ -16,14 +16,14 @@ function Vue (options) {
 }
 
 /**
- * 每个Mixin都是往Vue.prototype上挂载方法，
+ * 每个Mixin都是往Vue.prototype上挂载一些实例方法，
  * 这如果用ES6的class方式实现不利于代码拆分和模块化管理，
  * 所以采用了ES5的方式实现Vue构造函数
  * */
-initMixin(Vue)
-stateMixin(Vue)
-eventsMixin(Vue)
-lifecycleMixin(Vue)
-renderMixin(Vue)
+initMixin(Vue)/* 挂载 _init */
+stateMixin(Vue)/* 挂载 $set $delete $watch */
+eventsMixin(Vue)/* 挂载 $on $once $off $emit*/
+lifecycleMixin(Vue)/* 挂载 _update $forceUpdate $destroy */
+renderMixin(Vue)/* $nextTick _render 以及多个内部调用的方法 */
 
 export default Vue

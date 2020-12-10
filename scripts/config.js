@@ -26,10 +26,10 @@ const weexFactoryPlugin = {
 }
 
 const aliases = require('./alias')
-const resolve = p => {
-  const base = p.split('/')[0]
-  if (aliases[base]) {
-    return path.resolve(aliases[base], p.slice(base.length + 1))
+const resolve = p => { // p <= 'web/entry-runtime-with-compiler.js'
+  const base = p.split('/')[0]// base <= 'web'
+  if (aliases[base]) { // <= 'src/platforms/web'
+    return path.resolve(aliases[base], p.slice(base.length + 1))// <= 'src/platforms/web','/entry-runtime-with-compiler.js'
   } else {
     return path.resolve(__dirname, '../', p)
   }

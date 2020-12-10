@@ -5,7 +5,7 @@ import { FunctionalRenderContext } from 'core/vdom/create-functional-component'
 
 initGlobalAPI(Vue) /* 构建Vue全局API */
 
-Object.defineProperty(Vue.prototype, '$isServer', {
+Object.defineProperty(Vue.prototype, '$isServer', { /* 定义 $isServer,用于判断是否服务端渲染 */
   get: isServerRendering
 })
 
