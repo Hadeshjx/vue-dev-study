@@ -20,7 +20,7 @@ export function initMixin (Vue: Class<Component>) {
     vm._uid = uid++
 
     let startTag, endTag
-    /* istanbul ignore if */
+    /* istanbul ignore if */ /* 性能统计相关 */
     if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
       startTag = `vue-perf-start:${vm._uid}`
       endTag = `vue-perf-end:${vm._uid}`
@@ -30,7 +30,7 @@ export function initMixin (Vue: Class<Component>) {
     // a flag to avoid this being observed
     vm._isVue = true
     // merge options
-    if (options && options._isComponent) {
+    if (options && options._isComponent) {/* _isComponent 只有是组件的时候才是 true */
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
       // internal component options needs special treatment.
@@ -51,16 +51,16 @@ export function initMixin (Vue: Class<Component>) {
     }
     // expose real self
     vm._self = vm
-    initLifecycle(vm)
-    initEvents(vm)
-    initRender(vm)
+    initLifecycle(vm) /* 给vm对象添加了$parent、$root、$children属性，以及一些其它的生命周期相关的标识 */
+    initEvents(vm) /* 初始化事件相关的属性 */
+    initRender(vm) /* vm添加了一些虚拟dom、slot等相关的属性和方法 */
     callHook(vm, 'beforeCreate')
-    initInjections(vm) // resolve injections before data/props 给组件注入数据
-    initState(vm)
-    initProvide(vm) // resolve provide after data/props 提供数据
+    initInjections(vm) /* resolve injections before data/props 给组件注入数据,且这些属性不会被观察 */
+    initState(vm) /* props、methods、data、computed、watch，从这里开始就涉及到了Observer、Dep和Watcher */
+    initProvide(vm) /* resolve provide after data/props 提供数据 */
     callHook(vm, 'created')
 
-    /* istanbul ignore if */
+    /* istanbul ignore if */ /* 性能统计相关 */
     if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
       vm._name = formatComponentName(vm, false)
       mark(endTag)
