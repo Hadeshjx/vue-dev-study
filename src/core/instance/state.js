@@ -129,7 +129,7 @@ function initData (vm: Component) {
   let i = keys.length
   while (i--) {
     const key = keys[i]
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV !== 'production') { // 检测 自定义method是否存在与data同名方法
       if (methods && hasOwn(methods, key)) {
         warn(
           `Method "${key}" has already been defined as a data property.`,
@@ -137,14 +137,14 @@ function initData (vm: Component) {
         )
       }
     }
-    if (props && hasOwn(props, key)) {
+    if (props && hasOwn(props, key)) {// 检测 自定义prop是否存在与data同名属性
       process.env.NODE_ENV !== 'production' && warn(
         `The data property "${key}" is already declared as a prop. ` +
         `Use prop default value instead.`,
         vm
       )
-    } else if (!isReserved(key)) {
-      proxy(vm, `_data`, key)
+    } else if (!isReserved(key)) { // 如果不是 '_' 或 '$' 开头的 Key
+      proxy(vm, `_data`, key)// 代理到_data
     }
   }
   // observe data
